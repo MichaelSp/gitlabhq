@@ -1,5 +1,11 @@
+- stat = project.gitlab_ci_service.commit_status(commit[:id])
 %li.commit
   .commit-row-title
     = link_to commit[:id][0..8], project_commit_path(project, commit[:id]), class: "commit_short_id", alt: ''
     &nbsp;
-    = gfm escape_once(truncate(commit[:message], length: 70)) rescue "--broken encoding"
+    = gfm escape_once(truncate(commit[:message], length: 60)) rescue "--broken encoding"
+    - if project.gitlab_ci? and project.gitlab_ci_service.commit_status(commit[:id]) != :error
+      = link_to project.gitlab_ci_service.build_page(commit[:id]), class: "pull-right" do
+        %span.label #{stat['action'].humanize}
+        %span.label(class="#{icon_for_build_status[stat['status']]}")
+          = stat['status'].humanize

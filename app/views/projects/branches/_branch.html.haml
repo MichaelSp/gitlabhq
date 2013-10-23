@@ -20,6 +20,9 @@
       - if can?(current_user, :admin_project, @project) && branch.name != @repository.root_ref
         = link_to project_branch_path(@project, branch.name), class: 'btn grouped btn-small remove-row', method: :delete, confirm: 'Removed branch cannot be restored. Are you sure?', remote: true do
           %i.icon-trash
+      - if @project.gitlab_ci?
+        = link_to @project.gitlab_ci_service.builds_path(branch.name) do
+          = image_tag @project.gitlab_ci_service.status_img_path(branch.name), alt: "build status"
 
   %p
     = link_to project_commit_path(@project, commit.id), class: 'commit_short_id' do

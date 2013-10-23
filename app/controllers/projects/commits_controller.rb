@@ -16,7 +16,7 @@ class Projects::CommitsController < Projects::ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.js
+      format.js { no_cache_headers }
       format.atom { render layout: false }
     end
   end

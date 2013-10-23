@@ -3,10 +3,10 @@ require 'uri'
 
 module ApplicationHelper
   COLOR_SCHEMES = {
-    1 => 'white',
-    2 => 'dark',
-    3 => 'solarized-dark',
-    4 => 'monokai',
+      1 => 'white',
+      2 => 'dark',
+      3 => 'solarized-dark',
+      4 => 'monokai',
   }
   COLOR_SCHEMES.default = 'white'
 
@@ -84,14 +84,14 @@ module ApplicationHelper
     repository = @project.repository
 
     options = [
-      ["Branch", repository.branch_names ],
-      [ "Tag", repository.tag_names ]
+        ["Branch", repository.branch_names],
+        ["Tag", repository.tag_names]
     ]
 
     # If reference is commit id -
     # we should add it to branch/tag selectbox
-    if(@ref && !options.flatten.include?(@ref) &&
-       @ref =~ /^[0-9a-zA-Z]{6,52}$/)
+    if (@ref && !options.flatten.include?(@ref) &&
+        @ref =~ /^[0-9a-zA-Z]{6,52}$/)
       options << ["Commit", [@ref]]
     end
 
@@ -190,6 +190,17 @@ module ApplicationHelper
 
   def private_icon
     content_tag :i, nil, class: 'icon-lock cgreen'
+  end
+
+  def icon_for_build_status
+    {
+        "running" => "label-warning icon-cogs",
+        "pending" => "label-warning icon-time",
+        "success" => "label-success icon-ok",
+        "failed" => "label-important icon-warning-sign",
+        "error" => "label-default icon-question-sign",
+        "deployed" => "label-info icon-plane",
+    }
   end
 
   def search_placeholder

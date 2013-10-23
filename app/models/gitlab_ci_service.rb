@@ -39,7 +39,7 @@ class GitlabCiService < Service
     response = HTTParty.get(commit_status_path(sha))
 
     if response.code == 200 and response["status"]
-      response["status"]
+      response
     else
       :error
     end
@@ -49,12 +49,12 @@ class GitlabCiService < Service
     project_url + "/builds/#{sha}"
   end
 
-  def builds_path
-    project_url + "?ref=" + project.default_branch
+  def builds_path branch=project.default_branch
+    project_url + "?ref=" + branch
   end
 
-  def status_img_path
-    project_url + "/status.png?ref=" + project.default_branch
+  def status_img_path branch=project.default_branch
+    project_url + "/status.png?ref=" + branch
   end
 
   def title
@@ -71,8 +71,8 @@ class GitlabCiService < Service
 
   def fields
     [
-      { type: 'text', name: 'token', placeholder: 'GitLab CI project specific token' },
-      { type: 'text', name: 'project_url', placeholder: 'http://ci.gitlabhq.com/projects/3'}
+        {type: 'text', name: 'token', placeholder: 'GitLab CI project specific token'},
+        {type: 'text', name: 'project_url', placeholder: 'http://ci.gitlabhq.com/projects/3'}
     ]
   end
 end

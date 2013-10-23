@@ -14,6 +14,11 @@
         %li= link_to "Plain Diff",    project_commit_path(@project, @commit, format: :diff)
     = link_to project_tree_path(@project, @commit), class: "btn btn-primary grouped" do
       %span Browse Code »
+    - if @project.gitlab_ci? and @project.gitlab_ci_service.commit_status(@commit[:id]) != :error
+      = link_to @project.gitlab_ci_service.build_page(@commit[:id]) do
+        %span.label Build:
+        %span.label(class="#{icon_for_build_status[@project.gitlab_ci_service.commit_status(@commit[:id])]}")
+          = @project.gitlab_ci_service.commit_status(@commit[:id])
   %div
 
 %p
